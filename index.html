@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Employee List</title>
+	<link rel="stylesheet" href="index.css">
+		
+</head>
+<body>
+				
+	<div class="control-buttons">
+					
+	<button id="addButton" onclick="addEmp();">Add Employee</button>
+	<button id="doubleButton" onclick="doubleSalary();">Double Salary</button>
+	<button id="filterButton" onclick="filter();">Show Salary > 50,000</button>
+	<button id="descendingButton" onclick="decendingOrder();">Sort By Descending</button>
+	<button id="calculateButton" onclick="total();">Calculate Salary of all</button>
+					
+	</div>
+				
+	<br><br>
+				
+	<div id="infoTable">
+		<table id="mytable" border="1">
+			<tr id="head_row">
+				<th>Employee</th>
+				<th>Salary</th>
+			</tr>
+		</table>
+	</div>
+				
+	
+	<script>
+				
+	let arr = [  { name : "Mr.Sachin", Salary : "20000"},
+				{ name : "Mr.Santosh", Salary : "45000"},
+				{ name : "Mr.Satyam", Salary : "45000"},
+				{ name : "Mr.Shivam", Salary : "60000"},
+				{ name : "Miss. Sai", Salary : "40000"},
+				{ name : "Miss.Sakshi", Salary : "35000"},
+				{ name : "Mr. Sarthak", Salary : "28000"},
+				{ name : "Miss. Sonali", Salary : "24000"},
+				{ name : "Miss.Snehal", Salary : "30000"},
+				{ name : "Miss. Shweta", Salary : "50000"}];
+				
+	let count=0;
+	let addbtn = document.getElementById("addButton");
+	let doublebtn = document.getElementById("doubleButton");
+	let filterbtn = document.getElementById("filterButton");
+	let descendingbtn = document.getElementById("descendingButton");
+	let calculatebtn = document.getElementById("calculateButton");
+				
+	function addEmp()
+	{
+		let tbl = document.getElementById("mytable");		
+		let new_row = document.createElement("tr");
+		let name_col = document.createElement("td");
+		let sal_col = document.createElement("td");
+
+		name_col.setAttribute('class','EmpName');
+		sal_col.setAttribute('class','EmpSal');
+		new_row.appendChild(name_col);
+		new_row.appendChild(sal_col);
+		tbl.appendChild(new_row);
+						
+		name_col.innerHTML = arr[count].name;
+		sal_col.innerHTML = arr[count].Salary;
+		count++;
+		if(count == 10)
+		{
+			addbtn.setAttribute('disabled','true');
+		}
+		
+	}
+				
+	function doubleSalary()
+	{
+					
+		let tbl = document.getElementById("mytable");
+		let Esal = document.querySelectorAll(".EmpSal");
+		for(let j=0; j<Esal.length; j++)
+		{
+			let sal = (document.querySelectorAll(".EmpSal")[j]);
+			//console.log(sal.innerHTML);
+			let new_sal = sal.innerHTML;
+			sal.innerHTML = new_sal*2;
+		}
+		doublebtn.setAttribute('disabled','true');
+		addbtn.setAttribute('disabled','true');
+	}
+				
+	function filter()
+	{
+		filterbtn.setAttribute('disabled','true');
+		let tbl = document.getElementById("mytable");
+		//console.log(tbl);
+		let Sal = document.querySelectorAll(".EmpSal");
+		for(let k=0; k<Sal.length; k++)
+		{
+			let sal = (document.querySelectorAll(".EmpSal")[k]);
+			//console.log(sal.innerHTML);
+			let new_sal = sal.innerHTML;
+			if(new_sal < 50000)
+			{
+				let child = tbl.children[k+1];
+				tbl.removeChild(child);
+				k--;
+			}
+		}	
+	}
+				
+	function decendingOrder()
+	{
+		let tbl = document.getElementById("mytable");
+		//console.log(tbl);
+		let Sal = document.querySelectorAll(".EmpSal");
+		let Name = document.querySelectorAll(".EmpName");
+		for(let a=0; a<Sal.length-1; a++)
+		{
+			for(let b=a+1; b<Sal.length; b++)
+			{
+				let max_Sal = 0;
+				let max_Name = 0;
+				let current_sal = parseInt((document.querySelectorAll(".EmpSal")[a]).innerHTML);
+				let nex_sal = parseInt((document.querySelectorAll(".EmpSal")[b]).innerHTML);
+				//console.log(current_sal);
+				//console.log(nex_sal);
+				if(nex_sal > current_sal)
+				{
+					let pre_par = tbl.children[a+1];
+					let nxt_par = tbl.children[b+1];
+					max_Name = pre_par.children[0].innerHTML;
+					pre_par.children[0].innerHTML = nxt_par.children[0].innerHTML;
+					nxt_par.children[0].innerHTML = max_Name;
+							
+					max_Sal = pre_par.children[1].innerHTML;
+					pre_par.children[1].innerHTML = nxt_par.children[1].innerHTML;
+					nxt_par.children[1].innerHTML = max_Sal;
+								
+				}
+			}
+		}
+		descendingbtn.setAttribute('disabled','true');
+	}
+				
+	function total()
+	{
+		let tbl = document.getElementById("mytable");
+		let Sal = document.querySelectorAll(".EmpSal");
+		let ttl = 0;
+		for(let z=0; z<Sal.length; z++)
+		{
+			let sal = (document.querySelectorAll(".EmpSal")[z]);
+			//console.log(sal.innerHTML);
+			let new_sal = parseInt(sal.innerHTML);
+			ttl = ttl + new_sal;
+		}
+		let grand_ttl = document.createElement("tr");
+		grand_ttl.textContent = "Total : " + ttl;
+		tbl.appendChild(grand_ttl);
+		calculatebtn.setAttribute('disabled','true');
+	}
+				
+		</script>
+	</body>
+</html>
